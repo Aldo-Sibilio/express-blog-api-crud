@@ -29,10 +29,22 @@ const update = (request, response) => {
   response.json({ message: `Modifica del post ${id}` });
 };
 
-// Delete - cancella un post
+// Destroy - cancella un post
 const destroy = (request, response) => {
-  const id = request.params.id;
-  response.json({ message: `Cancellazione del post ${id}` });
-};
+  const id = parseInt(request.params.id);
+  const postIndex = posts.findIndex(post => post.id === id);
 
+  // se il post non esiste restituiamo un errore 404
+  if (postIndex === -1) {
+    return response.status(404).json({ message: `Post con id ${id} non trovato` });
+  }
+
+  // rimuoviamo il post dall'array
+  posts.splice(postIndex, 1);
+
+  // stampiamo in console l'array aggiornato
+  console.log(posts);
+
+  response.json({ message: `Post con id ${id} eliminato con successo` });
+};
 export { index, show, create, update, destroy };
