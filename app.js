@@ -1,0 +1,24 @@
+import express from 'express';
+import postsRouter from './routers/posts.js';
+
+const app = express();
+const port = 3000;
+
+// configurazione per leggere il JSON
+app.use(express.json());
+
+// configuriamo la cartella public per gli asset statici
+app.use(express.static('public'));
+
+// rotta principale
+app.get('/', (request, response) => {
+    response.send('Server del mio blog');
+});
+
+// registriamo il router dei post con il prefisso /posts
+app.use('/posts', postsRouter);
+
+// avviamo il server
+app.listen(port, () => {
+    console.log('Server avviato');
+});
