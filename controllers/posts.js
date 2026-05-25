@@ -1,12 +1,21 @@
+import posts from '../data/posts.js';
+
 // Index - restituisce la lista di tutti i post
 const index = (request, response) => {
-  response.json({ message: 'Lista dei post' });
+  response.json(posts);
 };
 
 // Show - restituisce un singolo post
 const show = (request, response) => {
-  const id = request.params.id;
-  response.json({ message: `Dettaglio del post ${id}` });
+  const id = parseInt(request.params.id);
+  const post = posts.find(post => post.id === id);
+
+  // se il post non esiste restituiamo un errore 404
+  if (!post) {
+    return response.status(404).json({ message: `Post con id ${id} non trovato` });
+  }
+
+  response.json(post);
 };
 
 // Create - crea un nuovo post
