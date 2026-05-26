@@ -58,8 +58,39 @@ const create = (request, response) => {
 
 // Update - modifica un post esistente
 const update = (request, response) => {
-  const id = request.params.id;
-  response.json({ message: `Modifica del post ${id}` });
+
+  const id = parseInt(request.params.id);
+  const postIndex = posts.findIndex(post => post.id === id);
+
+  // se il post non esiste restituiamo un errore 404
+  if (postIndex === -1) {
+    return response.status(404).json({ message: `Post con id ${id} non trovato` });
+  }
+
+  // leggiamo i dati dal body della request
+  const updatedData = request.body;
+
+  // validazione
+  if (!updatedData.title) {
+    return response.status(400).json({ message: 'Il titolo è obbligatorio' });
+  }
+
+  if (!updatedData.content) {
+    return response.status(400).json({ message: 'Il contenuto è obbligatorio' });
+  }
+
+  // aggiorniamo il post mantenendo l'id originale
+  const updatedPost = {
+    ...posts[postIndex],
+    ...updatedData,
+    id: id,
+  };
+
+  // sostituiamo il post nell'array
+  posts[postIndex] = updatedPost;
+
+  // restituiamo il post aggiornato
+  response.json(updatedPost);
 };
 
 // Destroy - cancella un post
