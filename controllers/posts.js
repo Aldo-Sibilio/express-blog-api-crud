@@ -18,9 +18,42 @@ const show = (request, response) => {
   response.json(post);
 };
 
-// Create - crea un nuovo post
+// Store - crea un nuovo post
 const create = (request, response) => {
-  response.json({ message: 'Creazione di un nuovo post' });
+
+  // leggiamo i dati dal body della request
+  const newPost = request.body;
+
+  // stampiamo in console i dati in arrivo (Milestone 1)
+  console.log(newPost);
+
+  // validazione - controlliamo che i campi obbligatori siano presenti
+  if (!newPost.title) {
+    return response.status(400).json({ message: 'Il titolo è obbligatorio' });
+  }
+
+  if (!newPost.content) {
+    return response.status(400).json({ message: 'Il contenuto è obbligatorio' });
+  }
+
+  // generiamo un nuovo id prendendo l'id più alto nell'array e aggiungendo 1
+  const newId = Math.max(...posts.map(post => post.id)) + 1;
+
+  // creiamo il nuovo post con tutti i dati
+  const post = {
+    id: newId,
+    title: newPost.title,
+    content: newPost.content,
+    image: newPost.image || null,
+    tags: newPost.tags || [],
+    published: newPost.published || false,
+  };
+
+  // aggiungiamo il post all'array
+  posts.push(post);
+
+  // restituiamo il nuovo post con status 201 (Created)
+  response.status(201).json(post);
 };
 
 // Update - modifica un post esistente
