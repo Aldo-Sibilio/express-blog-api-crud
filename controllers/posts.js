@@ -24,7 +24,7 @@ const create = (request, response) => {
   // leggiamo i dati dal body della request
   const newPost = request.body;
 
-  // stampiamo in console i dati in arrivo (Milestone 1)
+  // stampiamo in console i dati in arrivo
   console.log(newPost);
 
   // validazione - controlliamo che i campi obbligatori siano presenti
