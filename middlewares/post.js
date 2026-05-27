@@ -1,6 +1,7 @@
 import posts from '../data/posts.js';
 
 const findPost = (request, response, next) => {
+  console.log('findPost chiamato');
   const id = parseInt(request.params.id);
 
   // cerchiamo il post nell'array
