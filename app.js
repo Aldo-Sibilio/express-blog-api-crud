@@ -18,6 +18,17 @@ app.get('/', (request, response) => {
 // registriamo il router dei post con il prefisso /posts
 app.use('/posts', postsRouter);
 
+// middleware per le rotte non registrate (404)
+app.use((request, response, next) => {
+    response.status(404).json({ message: 'Rotta non trovata' });
+});
+
+// middleware per la gestione degli errori
+app.use((error, request, response, next) => {
+    console.error(error);
+    response.status(500).json({ message: 'Errore interno del server' });
+});
+
 // avviamo il server
 app.listen(port, () => {
     console.log('Server avviato');
